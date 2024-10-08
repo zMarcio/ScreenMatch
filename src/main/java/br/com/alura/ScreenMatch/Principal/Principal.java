@@ -3,14 +3,11 @@ package br.com.alura.screenmatch.principal;
 import br.com.alura.screenmatch.model.DadosSerie;
 import br.com.alura.screenmatch.model.DadosTemporada;
 import br.com.alura.screenmatch.model.Episodio;
+import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.service.ConsumoApi;
 import br.com.alura.screenmatch.service.ConverteDados;
 
-import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -19,7 +16,7 @@ public class Principal {
     private ConsumoApi consumo = new ConsumoApi();
     private ConverteDados conversor = new ConverteDados();
     private final String ENDERECO = "https://www.omdbapi.com/?t=";
-    private final String API_KEY = "&apikey=6585022c";
+    private final String API_KEY = "&apikey=2d273465";
     List<DadosSerie> dadosSeries = new ArrayList<>();
 
     public void exibeMenu() {
@@ -34,7 +31,7 @@ public class Principal {
                     """;
 
             System.out.println(menu);
-            var opcao = leitura.nextInt();
+            opcao = leitura.nextInt();
             leitura.nextLine();
 
             switch (opcao) {
@@ -82,7 +79,9 @@ public class Principal {
         temporadas.forEach(System.out::println);
     }
     private void listarSeriesBuscada(){
-        dadosSeries.forEach(System.out::println);
+        List<Serie> series = new ArrayList<>();
+        series = dadosSeries.stream().map(Serie::new).collect(Collectors.toList());
+        series.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
     }
 
 }
