@@ -2,10 +2,12 @@ package br.com.alura.screenmatch.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity
-@Table(name = "Series")
+@Table(name = "series")
 public class Serie {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +24,9 @@ public class Serie {
     private String poster;
     private String sinopse;
 
+    @OneToMany(mappedBy = "serie",cascade = CascadeType.ALL)
+    private List<Episodio> episodios = new ArrayList<>();
+
     public Serie(DadosSerie dadosSerie) {
         this.titulo = dadosSerie.titulo();
         this.totalTemporadas = dadosSerie.totalTemporadas();
@@ -33,6 +38,15 @@ public class Serie {
     }
 
     public Serie() {
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
+        this.episodios = episodios;
     }
 
     public Long getId() {
@@ -108,7 +122,8 @@ public class Serie {
                 ", avaliacao=" + avaliacao +
                 ", atores='" + atores + '\'' +
                 ", poster='" + poster + '\'' +
-                ", sinopse='" + sinopse + '\'';
+                ", sinopse='" + sinopse + '\''+
+                ", episódios='" + episodios + '\'';
 
     }
 
